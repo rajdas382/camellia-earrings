@@ -1,0 +1,134 @@
+# Create the HTML content for the website using the uploaded images and WhatsApp number
+html_template = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Camellia - Handmade Earrings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {{
+      font-family: 'Raleway', sans-serif;
+      margin: 0;
+      background: #fffafa;
+      color: #333;
+    }}
+    header {{
+      background-color: #ffb6c1;
+      padding: 2rem;
+      text-align: center;
+    }}
+    header h1 {{
+      margin: 0;
+      font-size: 2.8rem;
+    }}
+    header p {{
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+    }}
+    .btn {{
+      background: #e75480;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+    }}
+    section {{
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }}
+    .product-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }}
+    .product-card {{
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    }}
+    .product-card img {{
+      width: 100%;
+      border-radius: 8px;
+    }}
+    .product-card h3 {{
+      margin-top: 0.8rem;
+      font-size: 1.1rem;
+    }}
+    .offer {{
+      background: #ffe6f0;
+      text-align: center;
+      padding: 1rem;
+      border-radius: 10px;
+      font-weight: bold;
+      margin-top: 2rem;
+    }}
+    footer {{
+      text-align: center;
+      padding: 1rem;
+      background: #fcdde4;
+      font-size: 0.9rem;
+    }}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Camellia</h1>
+  <p>Handmade earrings starting from ₹25</p>
+  <a href="#shop" class="btn">Shop Now</a>
+</header>
+
+<section>
+  <h2>Our Collection</h2>
+  <div class="product-grid">
+    {products}
+  </div>
+</section>
+
+<section class="offer">
+  🎁 Free delivery on 3 or more items!
+</section>
+
+<footer>
+  &copy; 2025 Camellia. All rights reserved.
+</footer>
+
+</body>
+</html>
+"""
+
+# Generate product card HTML for each image
+whatsapp_number = "9874682415"
+product_cards = ""
+for i, filename in enumerate(copied_files, start=1):
+    product_cards += f"""
+    <div class="product-card">
+      <img src="images/{filename}" alt="Earring {i}">
+      <h3>Earring Design {i}</h3>
+      <p>₹25</p>
+      <a class="btn" href="https://wa.me/91{whatsapp_number}?text=Hi! I'm interested in Earring Design {i} (₹25)">Order on WhatsApp</a>
+    </div>
+    """
+
+# Format the full HTML content
+final_html = html_template.format(products=product_cards)
+
+# Save the HTML to index.html
+index_path = site_dir / "index.html"
+index_path.write_text(final_html)
+
+# Zip the website directory
+zip_path = "/mnt/data/camellia_earrings_website.zip"
+shutil.make_archive(zip_path.replace(".zip", ""), 'zip', site_dir)
+
+zip_path
